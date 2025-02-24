@@ -11,6 +11,5 @@ public record OrderConfirmation(
         PaymentMethod paymentMethod,
         Customer customer,
         List<Product> products
-
 ) {
 }

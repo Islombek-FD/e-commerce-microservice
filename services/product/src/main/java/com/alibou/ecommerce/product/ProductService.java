@@ -14,13 +14,10 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-
     private final ProductRepository repository;
     private final ProductMapper mapper;
 
-    public Integer createProduct(
-            ProductRequest request
-    ) {
+    public Integer createProduct(ProductRequest request) {
         var product = mapper.toProduct(request);
         return repository.save(product).getId();
     }
@@ -39,9 +36,7 @@ public class ProductService {
     }
 
     @Transactional(rollbackFor = ProductPurchaseException.class)
-    public List<ProductPurchaseResponse> purchaseProducts(
-            List<ProductPurchaseRequest> request
-    ) {
+    public List<ProductPurchaseResponse> purchaseProducts(List<ProductPurchaseRequest> request) {
         var productIds = request
                 .stream()
                 .map(ProductPurchaseRequest::productId)
@@ -64,9 +59,8 @@ public class ProductService {
             var newAvailableQuantity = product.getAvailableQuantity() - productRequest.quantity();
             product.setAvailableQuantity(newAvailableQuantity);
             repository.save(product);
-            purchasedProducts.add(mapper.toproductPurchaseResponse(product, productRequest.quantity()));
+            purchasedProducts.add(mapper.toProductPurchaseResponse(product, productRequest.quantity()));
         }
         return purchasedProducts;
     }
-
 }
